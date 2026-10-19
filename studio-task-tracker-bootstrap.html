@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studio Atelier · Projects</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<script>(function(){ try{ if(matchMedia("(prefers-color-scheme: dark)").matches) document.documentElement.setAttribute("data-bs-theme","dark"); }catch(e){} })();</script>
+<style>
+:root,[data-bs-theme="light"]{
+  --bs-font-sans-serif:"Lato",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bs-body-font-size:.875rem;
+  --bs-primary:#1F72EB; --bs-primary-rgb:31,114,235;
+  --bs-link-color:#1F72EB; --bs-link-color-rgb:31,114,235;
+  --canvas:#F1F3F6; --rail:#18263A; --rail-hover:#22344D; --rail-active:#1F72EB;
+  --st-todo:#8592A3; --st-doing:#1F72EB; --st-review:#E59A0C; --st-done:#22A06B;
+  --hdr:#FFFFFF;
+}
+html[data-bs-theme="dark"]{
+  --bs-primary:#5B9BF5; --bs-primary-rgb:91,155,245;
+  --bs-link-color:#5B9BF5; --bs-link-color-rgb:91,155,245;
+  --bs-body-bg:#1B2129; --bs-tertiary-bg:#212833; --bs-border-color:#2E3744;
+  --canvas:#12171E; --rail:#0E141C; --rail-hover:#18212D; --rail-active:#3B82F6;
+  --st-todo:#9AA6B6; --st-doing:#5B9BF5; --st-review:#F0B44C; --st-done:#4CC38A;
+  --hdr:#1B2129;
+}
+body{background:var(--canvas); padding-bottom:env(safe-area-inset-bottom,0px)}
+.btn-primary{--bs-btn-bg:#1F72EB; --bs-btn-border-color:#1F72EB; --bs-btn-hover-bg:#1863D0; --bs-btn-hover-border-color:#1863D0; --bs-btn-active-bg:#1556B6; --bs-btn-active-border-color:#1556B6; --bs-btn-disabled-bg:#1F72EB; --bs-btn-disabled-border-color:#1F72EB}
+html[data-bs-theme="dark"] .btn-primary{--bs-btn-bg:#3B82F6; --bs-btn-border-color:#3B82F6; --bs-btn-hover-bg:#5B9BF5; --bs-btn-hover-border-color:#5B9BF5}
+.nav-pills{--bs-nav-pills-link-active-bg:var(--bs-primary); --bs-nav-link-color:var(--bs-primary)}
+.form-control:focus,.form-select:focus{border-color:var(--bs-primary); box-shadow:0 0 0 .2rem rgba(var(--bs-primary-rgb),.18)}
+
+/* ---------- Shell ---------- */
+.shell{display:flex; min-height:100vh; min-height:100dvh}
+.rail{width:76px; flex:none; background:var(--rail); flex-direction:column; align-items:stretch; padding:.6rem .4rem; position:sticky; top:0; height:100vh; height:100dvh; gap:.15rem}
+.rail .logo{width:40px; height:40px; margin:.2rem auto .9rem; border-radius:9px; background:linear-gradient(135deg,#1F72EB,#22A06B); color:#fff; display:grid; place-items:center; font-weight:900; font-size:.85rem; letter-spacing:.02em}
+.rail-item{display:flex; flex-direction:column; align-items:center; gap:.2rem; padding:.55rem .2rem; border:0; border-radius:8px; background:transparent; color:#AEB9C7; font-size:.68rem; line-height:1.1}
+.rail-item i{font-size:1.15rem}
+.rail-item:hover{background:var(--rail-hover); color:#fff}
+.rail-item.active{background:var(--rail-active); color:#fff}
+.workspace{flex:1; min-width:0; display:flex; flex-direction:column}
+
+.topbar{background:var(--hdr); border-bottom:1px solid var(--bs-border-color); padding:.55rem 1rem; padding-top:calc(.55rem + env(safe-area-inset-top,0px)); display:flex; align-items:center; gap:.75rem; position:sticky; top:0; z-index:1020}
+.topbar .org{font-weight:700; font-size:.95rem; white-space:nowrap}
+.search{position:relative; flex:1; max-width:420px}
+.search i{position:absolute; left:.7rem; top:50%; transform:translateY(-50%); color:var(--bs-secondary-color)}
+.search input{padding-left:2.1rem; background:var(--bs-tertiary-bg); border-color:transparent}
+.search input:focus{background:var(--bs-body-bg)}
+.icon-btn{width:34px; height:34px; display:inline-grid; place-items:center; border:0; border-radius:50%; background:transparent; color:var(--bs-secondary-color)}
+.icon-btn:hover{background:var(--bs-tertiary-bg); color:var(--bs-body-color)}
+
+.projbar{background:var(--hdr); border-bottom:1px solid var(--bs-border-color); padding:.75rem 1rem 0}
+.proj-switch{border:0; background:transparent; padding:.15rem .3rem; margin-left:-.3rem; border-radius:6px; display:inline-flex; align-items:center; gap:.5rem; font-weight:700; font-size:1.1rem; color:var(--bs-body-color)}
+.proj-switch:hover{background:var(--bs-tertiary-bg)}
+.proj-icon{width:28px; height:28px; border-radius:6px; display:grid; place-items:center; color:#fff; font-size:.75rem; font-weight:900; flex:none}
+.ptabs{display:flex; gap:.25rem; overflow-x:auto; scrollbar-width:none; margin-top:.5rem}
+.ptabs::-webkit-scrollbar{display:none}
+.ptab{border:0; background:transparent; padding:.55rem .85rem; color:var(--bs-secondary-color); font-weight:700; font-size:.82rem; border-bottom:3px solid transparent; white-space:nowrap}
+.ptab:hover{color:var(--bs-body-color)}
+.ptab.active{color:var(--bs-primary); border-bottom-color:var(--bs-primary)}
+
+.content{padding:1rem; flex:1}
+@media (min-width:768px){ .content{padding:1.25rem 1.5rem} .topbar,.projbar{padding-left:1.5rem; padding-right:1.5rem} }
+
+.toolrow{display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin-bottom:1rem}
+.toolrow .form-select{width:auto; min-width:0}
+@media (max-width:575.98px){ .toolrow .form-select{flex:1 1 45%} }
+
+/* ---------- Widgets ---------- */
+.widget{background:var(--bs-body-bg); border:1px solid var(--bs-border-color); border-radius:8px}
+.widget-h{display:flex; align-items:center; gap:.5rem; padding:.8rem 1rem; border-bottom:1px solid var(--bs-border-color); font-weight:700}
+.stat{display:flex; align-items:center; gap:.85rem; padding:1rem}
+.stat .ic{width:42px; height:42px; border-radius:50%; display:grid; place-items:center; font-size:1.1rem; flex:none}
+.stat .v{font-size:1.5rem; font-weight:900; line-height:1.1}
+.stat .l{color:var(--bs-secondary-color); font-size:.8rem}
+.ic-blue{background:rgba(31,114,235,.12); color:var(--st-doing)}
+.ic-red{background:rgba(220,53,69,.12); color:#D63B4B}
+.ic-amber{background:rgba(229,154,12,.14); color:var(--st-review)}
+.ic-green{background:rgba(34,160,107,.13); color:var(--st-done)}
+.statusbar{display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--bs-tertiary-bg)}
+.statusbar i{display:block; height:100%}
+
+/* ---------- Status & priority ---------- */
+.st{display:inline-block; font-size:.74rem; font-weight:700; padding:.22rem .6rem; border-radius:3px; color:#fff; white-space:nowrap; min-width:84px; text-align:center}
+.st-todo{background:var(--st-todo)} .st-doing{background:var(--st-doing)} .st-review{background:var(--st-review)} .st-done{background:var(--st-done)}
+.pr{display:inline-flex; align-items:center; gap:.3rem; font-size:.8rem; white-space:nowrap}
+.pr-high{color:#D63B4B} .pr-normal{color:var(--bs-secondary-color)} .pr-low{color:var(--bs-tertiary-color)}
+.dot{width:9px; height:9px; border-radius:50%; display:inline-block; flex:none}
+.avatar{width:26px; height:26px; border-radius:50%; display:inline-grid; place-items:center; font-size:.66rem; font-weight:700; color:#fff; flex:none}
+.avatar.lg{width:34px; height:34px; font-size:.78rem}
+.due-late{color:#D63B4B; font-weight:700}
+.due-soon{color:var(--st-review); font-weight:700}
+.tlist td.due-late{color:#D63B4B} .tlist td.due-soon{color:var(--st-review)}
+.pct{display:inline-flex; align-items:center; gap:.45rem; min-width:110px}
+.pct .progress{flex:1; height:6px}
+.pct span{font-size:.76rem; color:var(--bs-secondary-color); width:32px; text-align:right}
+
+/* ---------- List view ---------- */
+.tlist{background:var(--bs-body-bg); border:1px solid var(--bs-border-color); border-radius:8px; overflow:hidden}
+.tlist table{min-width:860px; margin:0}
+.tlist .table > :not(caption) > * > *{padding:.6rem .8rem; border-color:var(--bs-border-color)}
+.tlist thead th{font-size:.74rem; font-weight:700; color:var(--bs-secondary-color); background:var(--bs-tertiary-bg); white-space:nowrap}
+.tlist tr.group td{background:var(--bs-body-bg); padding:.55rem .8rem; cursor:pointer}
+.tlist tr.group .gname{font-weight:700}
+.tlist tr.group .chev{transition:transform .15s; display:inline-block}
+.tlist tr.group.collapsed .chev{transform:rotate(-90deg)}
+.tlist tr.task{cursor:pointer}
+.tlist tr.task:hover td{background:rgba(var(--bs-primary-rgb),.04)}
+.tlist tr.task td:first-child{border-left:3px solid var(--sc)}
+.tname{font-weight:700; color:var(--bs-body-color)}
+.tname.done{text-decoration:line-through; color:var(--bs-secondary-color); font-weight:400}
+.tabular{font-variant-numeric:tabular-nums}
+
+/* ---------- Kanban ---------- */
+.kcol{background:var(--bs-tertiary-bg); border-radius:8px; border-top:3px solid var(--sc); min-height:12rem}
+.kcol-h{display:flex; align-items:center; gap:.5rem; padding:.7rem .8rem; font-weight:700}
+.kcol-h .n{margin-left:auto; font-size:.75rem; font-weight:700; color:var(--bs-secondary-color); background:var(--bs-body-bg); border-radius:10px; padding:.05rem .5rem}
+.kcol.drop{outline:2px dashed var(--bs-primary); outline-offset:-3px}
+.kcard{background:var(--bs-body-bg); border:1px solid var(--bs-border-color); border-radius:6px; padding:.7rem .8rem; cursor:pointer; box-shadow:0 1px 2px rgba(16,24,40,.06)}
+.kcard:hover{box-shadow:0 3px 10px rgba(16,24,40,.1)}
+.kcard .last{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+
+/* ---------- Drawer ---------- */
+#taskPanel{--bs-offcanvas-width:520px}
+@media (max-width:575.98px){ #taskPanel{--bs-offcanvas-width:100%} }
+#taskPanel .offcanvas-header{padding-top:calc(var(--bs-offcanvas-padding-y) + env(safe-area-inset-top,0px)); background:var(--bs-tertiary-bg)}
+#taskPanel .offcanvas-footer{padding-bottom:calc(.8rem + env(safe-area-inset-bottom,0px))}
+.dfield{display:grid; grid-template-columns:120px 1fr; align-items:center; gap:.5rem; margin-bottom:.6rem}
+.dfield label{color:var(--bs-secondary-color); font-size:.8rem}
+@media (max-width:420px){ .dfield{grid-template-columns:1fr; gap:.25rem} }
+.timeline{list-style:none; margin:0; padding:0 0 0 1rem; border-left:2px solid var(--bs-border-color)}
+.timeline li{position:relative; padding:0 0 .85rem .8rem}
+.timeline li::before{content:""; position:absolute; left:-1.43rem; top:.3rem; width:10px; height:10px; border-radius:50%; background:var(--bs-body-bg); border:2px solid var(--bs-primary)}
+#menu{--bs-offcanvas-width:280px; background:var(--rail)}
+.menu-link{display:flex; align-items:center; gap:.7rem; width:100%; padding:.6rem .75rem; border:0; border-radius:6px; background:transparent; color:#C5CFDB; text-align:left}
+.menu-link.active,.menu-link:hover{background:var(--rail-hover); color:#fff}
+.menu-link.active{background:var(--rail-active)}
+.toast-container{padding-bottom:calc(1rem + env(safe-area-inset-bottom,0px)) !important}
+</style>
+</head>
+<body>
+<div class="shell">
+  <!-- Left navigation rail (desktop) -->
+  <nav class="rail d-none d-lg-flex" aria-label="Main">
+    <div class="logo">SA</div>
+    <div id="rail" class="d-flex flex-column gap-1"></div>
+    <div class="mt-auto d-flex flex-column gap-1">
+      <button class="rail-item" id="railTeam" data-bs-toggle="modal" data-bs-target="#teamModal"><i class="bi bi-gear"></i>Setup</button>
+    </div>
+  </nav>
+
+  <div class="workspace">
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="icon-btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu" aria-label="Open menu"><i class="bi bi-list fs-5"></i></button>
+      <span class="org d-none d-sm-inline">Studio Atelier</span>
+      <div class="search ms-sm-3"><i class="bi bi-search"></i><input class="form-control form-control-sm" id="search" type="search" placeholder="Search tasks" aria-label="Search tasks"></div>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <button class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1" id="add"><i class="bi bi-plus-lg"></i><span class="d-none d-sm-inline">New task</span></button>
+        <div class="dropdown">
+          <button class="btn p-0 border-0 d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account" id="meBtn"></button>
+          <div class="dropdown-menu dropdown-menu-end shadow" style="min-width:240px">
+            <div class="px-3 pt-2 pb-1 small text-body-secondary">Signed in as (demo)</div>
+            <div id="signInList"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Project bar with tabs -->
+    <div class="projbar">
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <div class="dropdown">
+          <button class="proj-switch" data-bs-toggle="dropdown" aria-expanded="false" id="projBtn"></button>
+          <ul class="dropdown-menu shadow" id="projMenu"></ul>
+        </div>
+        <span class="small text-body-secondary" id="projMeta"></span>
+      </div>
+      <nav class="ptabs" id="tabs" aria-label="Views"></nav>
+    </div>
+
+    <main class="content">
+      <div id="notices"></div>
+      <div class="toolrow" id="toolrow">
+        <select class="form-select form-select-sm" id="fPhase" aria-label="Filter by phase"></select>
+        <select class="form-select form-select-sm" id="fPerson" aria-label="Filter by owner"></select>
+        <select class="form-select form-select-sm" id="fStatus" aria-label="Filter by status"></select>
+        <span class="ms-auto small text-body-secondary" id="countLabel"></span>
+      </div>
+      <section id="vDash"></section>
+      <section id="vList" hidden></section>
+      <section id="vKanban" hidden>
+        <ul class="nav nav-pills nav-fill gap-1 mb-3 d-md-none small" id="statusPills" aria-label="Status"></ul>
+        <div class="row g-3" id="kanban"></div>
+      </section>
+      <section id="vTeam" hidden></section>
+    </main>
+  </div>
+</div>
+
+<!-- Mobile menu -->
+<div class="offcanvas offcanvas-start text-white" tabindex="-1" id="menu" aria-labelledby="menuLabel" data-bs-theme="dark">
+  <div class="offcanvas-header" style="padding-top:calc(1rem + env(safe-area-inset-top,0px))">
+    <div class="d-flex align-items-center gap-2" id="menuLabel"><div class="logo m-0" style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#1F72EB,#22A06B);display:grid;place-items:center;font-weight:900;font-size:.8rem">SA</div><span class="fw-bold">Studio Atelier</span></div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column gap-1">
+    <div id="menuViews" class="d-flex flex-column gap-1"></div>
+    <div class="small text-white-50 mt-3 mb-1 px-2">Projects</div>
+    <div id="menuProjects" class="d-flex flex-column gap-1"></div>
+    <button class="menu-link mt-3" data-bs-toggle="modal" data-bs-target="#teamModal"><i class="bi bi-gear"></i>Team & project setup</button>
+  </div>
+</div>
+
+<!-- Task drawer -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="taskPanel" aria-labelledby="taskTitle">
+  <form id="taskForm" class="d-flex flex-column h-100" novalidate>
+    <div class="offcanvas-header border-bottom">
+      <div class="me-auto">
+        <div class="small text-body-secondary" id="taskCrumb">New task</div>
+        <h2 class="offcanvas-title h6 fw-bold mb-0" id="taskTitle">New task</h2>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="mb-3"><input class="form-control fw-bold" id="tTitle" required placeholder="Task name, e.g. Issue revised stair section" aria-label="Task name"><div class="invalid-feedback">Give the task a name.</div></div>
+      <div class="dfield"><label for="tStatus">Status</label><select class="form-select form-select-sm" id="tStatus"></select></div>
+      <div class="dfield"><label for="tPerson">Owner</label><select class="form-select form-select-sm" id="tPerson"></select></div>
+      <div class="dfield"><label for="tProject">Project</label><select class="form-select form-select-sm" id="tProject"></select></div>
+      <div class="dfield"><label for="tPhase">Phase</label><select class="form-select form-select-sm" id="tPhase"></select></div>
+      <div class="dfield"><label for="tDue">Due date</label><div><input type="date" class="form-control form-control-sm" id="tDue" required><div class="invalid-feedback">Pick a due date.</div></div></div>
+      <div class="dfield"><label for="tPriority">Priority</label><select class="form-select form-select-sm" id="tPriority"><option value="high">High</option><option value="normal">Normal</option><option value="low">Low</option></select></div>
+      <div class="mt-3 mb-3"><label class="form-label small fw-bold" for="tNotes">Description</label><textarea class="form-control" id="tNotes" rows="3" placeholder="Drawing numbers, consultant, client comments…"></textarea></div>
+      <div class="mb-3" id="updateWrap"><label class="form-label small fw-bold" for="tUpdate">Add a comment</label><textarea class="form-control" id="tUpdate" rows="2" placeholder="Progress, questions or blockers"></textarea></div>
+      <div id="logWrap" hidden><div class="fw-bold small mb-2">Activity</div><ul class="timeline small" id="log"></ul></div>
+    </div>
+    <div class="offcanvas-footer d-flex gap-2 border-top px-3 pt-3">
+      <button type="button" class="btn btn-outline-danger btn-sm" id="del" hidden><i class="bi bi-trash"></i> Delete</button>
+      <span class="flex-grow-1"></span>
+      <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="offcanvas">Cancel</button>
+      <button type="submit" class="btn btn-primary btn-sm" id="save">Save</button>
+    </div>
+  </form>
+</div>
+
+<!-- Request changes -->
+<div class="modal fade" id="changesModal" tabindex="-1" aria-labelledby="changesTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" id="changesForm">
+      <div class="modal-header"><h2 class="modal-title h6 fw-bold" id="changesTitle">Request changes</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body">
+        <p class="small text-body-secondary mb-2" id="changesTask"></p>
+        <label class="form-label small fw-bold" for="changesNote">What needs changing?</label>
+        <textarea class="form-control" id="changesNote" rows="3" placeholder="This note is shown to the task owner"></textarea>
+      </div>
+      <div class="modal-footer"><button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary btn-sm">Send back</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Setup -->
+<div class="modal fade" id="teamModal" tabindex="-1" aria-labelledby="teamTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title h6 fw-bold" id="teamTitle">Team & project setup</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body">
+        <div class="fw-bold small mb-2">Team members</div>
+        <ul class="list-group mb-2" id="members"></ul>
+        <form class="row g-2 mb-4" id="memberForm">
+          <div class="col-12 col-sm-6"><input class="form-control form-control-sm" id="newName" placeholder="Full name" required aria-label="Full name"></div>
+          <div class="col-8 col-sm-4"><select class="form-select form-select-sm" id="newRole" aria-label="Role"><option>Principal</option><option selected>Project architect</option><option>Architect</option><option>Designer</option><option>Interiors</option><option>Intern</option></select></div>
+          <div class="col-4 col-sm-2 d-grid"><button class="btn btn-primary btn-sm" type="submit">Add</button></div>
+        </form>
+        <div class="fw-bold small mb-2">Projects</div>
+        <ul class="list-group mb-2" id="projectList"></ul>
+        <form class="input-group input-group-sm" id="projectForm">
+          <input class="form-control" id="newProject" placeholder="New project name" required aria-label="New project name">
+          <button class="btn btn-outline-primary" type="submit">Add project</button>
+        </form>
+      </div>
+      <div class="modal-footer"><button class="btn btn-outline-danger btn-sm me-auto" id="resetDemo">Reset sample data</button><button class="btn btn-primary btn-sm" data-bs-dismiss="modal">Done</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+  <div class="toast align-items-center text-bg-dark border-0" id="toast" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="2400">
+    <div class="d-flex"><div class="toast-body" id="toastMsg"></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ================= Data ================= */
+const PHASES = [
+  {id:"sd", name:"Schematic design"}, {id:"dd", name:"Design development"},
+  {id:"cd", name:"Construction docs"}, {id:"bid", name:"Tender"}, {id:"ca", name:"Site & construction"}
+];
+const STATUSES = [
+  {id:"todo", name:"To do", pct:0}, {id:"doing", name:"In progress", pct:50},
+  {id:"review", name:"In review", pct:90}, {id:"done", name:"Approved", pct:100}
+];
+const PROJECT_COLORS = ["#1F72EB","#E8590C","#22A06B","#8B5CF6","#D63B4B","#0EA5A4","#64748B"];
+const AV_COLORS = ["#1F72EB","#E8590C","#22A06B","#8B5CF6","#D63B4B","#0EA5A4","#B45309"];
+const STORAGE_KEY = "studio-task-register-bootstrap-v1";
+
+function daysFromNow(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+function seed(){
+  const now = new Date().toISOString();
+  const projects = ["Harbour View Residence","Riverside Library Annex","Kiln Street Studios","Orchard School Extension"];
+  const members = [
+    {key:"m-arjun", name:"Arjun Rao", role:"Project architect"},
+    {key:"m-meera", name:"Meera Shah", role:"Designer"},
+    {key:"m-sam", name:"Sam D’Souza", role:"Interiors"},
+    {key:"m-kavya", name:"Kavya Iyer", role:"Architect"}
+  ];
+  let n=0;
+  const T = (title,p,phase,who,due,status,priority,log=[]) => ({id:"t"+(++n), title, project:projects[p], phase, assignee:who, due:daysFromNow(due), status, priority, notes:"", log, updatedAt:now});
+  return { projects, members, tasks:[
+    T("Coordinate structural grid with consultant",1,"dd","m-arjun",-2,"doing","high",[{at:now, by:"m-arjun", text:"Waiting on revised column sizes from the engineer."}]),
+    T("Door and window schedule",1,"cd","m-arjun",9,"todo","normal"),
+    T("Respond to contractor RFI #14",3,"ca","m-arjun",3,"todo","normal"),
+    T("Wall sections A-301 to A-305",0,"cd","m-meera",2,"review","high",[{at:now, by:"m-meera", text:"Sections done, submitted for checking."}]),
+    T("Massing options for client workshop",0,"sd","m-meera",1,"doing","high"),
+    T("Material palette board",2,"dd","m-sam",6,"doing","normal"),
+    T("Lighting layout for reading room",1,"cd","m-sam",-1,"todo","low"),
+    T("Site analysis: sun path and views",3,"sd","m-kavya",4,"todo","normal"),
+    T("Issue tender drawing set",2,"bid","m-kavya",-1,"review","high",[{at:now, by:"m-kavya", text:"Set compiled, 42 sheets. Ready for sign-off."}]),
+    T("Fortnightly site visit report",3,"ca","m-kavya",-5,"done","normal",[{at:now, by:"manager", text:"Approved."}])
+  ]};
+}
+/* Storage: swap load()/persist() for API calls when you add a backend */
+function load(){ try{ const d = JSON.parse(localStorage.getItem(STORAGE_KEY)); if(d && Array.isArray(d.tasks)) return d; }catch(e){} return seed(); }
+function persist(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); }catch(e){} }
+let DATA = load();
+const S = { signedInAs:"manager", view:"list", mobileStatus:"doing", collapsed:new Set(), q:"", filters:{phase:"", project:"", person:"", status:""} };
+
+/* ================= Helpers ================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const phaseName = id => (PHASES.find(x=>x.id===id)||{}).name || "";
+const statusOf = id => STATUSES.find(x=>x.id===id) || STATUSES[0];
+const stBadge = s => `<span class="st st-${s}">${statusOf(s).name}</span>`;
+const prBadge = p => `<span class="pr pr-${esc(p)}"><i class="bi ${p==="high"?"bi-flag-fill":p==="low"?"bi-flag":"bi-flag"}"></i>${p==="high"?"High":p==="low"?"Low":"Normal"}</span>`;
+const pctBar = s => { const v=statusOf(s).pct; return `<span class="pct"><span class="progress" role="progressbar" aria-label="Completion" aria-valuenow="${v}" aria-valuemin="0" aria-valuemax="100"><span class="progress-bar" style="width:${v}%;background:var(--st-${s})"></span></span><span>${v}%</span></span>`; };
+function hash(s){ let h=0; for(const c of String(s)) h=(h*31+c.charCodeAt(0))|0; return Math.abs(h); }
+function projColor(p){ const i = DATA.projects.indexOf(p); return PROJECT_COLORS[(i<0?hash(p):i) % PROJECT_COLORS.length]; }
+function projInitials(p){ return p.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase(); }
+const member = key => DATA.members.find(m=>m.key===key);
+function displayName(key){ if(!key) return "Unassigned"; if(key==="manager") return "Manager"; return (member(key)||{}).name || "Former member"; }
+function initials(name){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase() || "?"; }
+function avatar(key, lg){
+  if(key==="manager") return `<span class="avatar${lg?" lg":""}" style="background:#18263A">MG</span>`;
+  if(!key) return `<span class="avatar${lg?" lg":""} bg-secondary" title="Unassigned">–</span>`;
+  return `<span class="avatar${lg?" lg":""}" style="background:${AV_COLORS[hash(key)%AV_COLORS.length]}" title="${esc(displayName(key))}">${esc(initials(displayName(key)))}</span>`;
+}
+function dueInfo(t){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(t.due+"T00:00:00"); const diff = Math.round((d - today)/86400000);
+  const label = isNaN(d) ? "–" : d.toLocaleDateString(undefined,{day:"2-digit", month:"short", year:"numeric"});
+  const short = isNaN(d) ? "–" : d.toLocaleDateString(undefined,{day:"numeric", month:"short"});
+  if(t.status==="done") return {cls:"", text:short, diff, label};
+  if(diff<0) return {cls:"due-late", text:`${-diff}d overdue`, diff, label};
+  if(diff<=1) return {cls:"due-soon", text:diff===0?"Today":"Tomorrow", diff, label};
+  if(diff<=3) return {cls:"due-soon", text:short, diff, label};
+  return {cls:"", text:short, diff, label};
+}
+function ago(iso){
+  const m = Math.round((Date.now()-new Date(iso))/60000);
+  if(isNaN(m)) return ""; if(m<1) return "just now"; if(m<60) return `${m} min ago`;
+  const h = Math.round(m/60); if(h<24) return `${h} h ago`;
+  return new Date(iso).toLocaleDateString(undefined,{day:"numeric", month:"short"});
+}
+function fill(el, items, allLabel, value){
+  el.innerHTML = (allLabel!==null ? `<option value="">${esc(allLabel)}</option>` : "") + items.map(i=>`<option value="${esc(i.value)}">${esc(i.label)}</option>`).join("");
+  if(value!==undefined) el.value = value;
+}
+const isManager = () => S.signedInAs==="manager";
+
+/* ================= Render ================= */
+function views(){
+  const v = [{id:"dash",name:"Dashboard",icon:"bi-speedometer2"},{id:"list",name:"Tasks",icon:"bi-list-check"},{id:"kanban",name:"Kanban",icon:"bi-kanban"}];
+  if(isManager()) v.push({id:"team",name:"Team",icon:"bi-people"});
+  return v;
+}
+function render(){
+  const f = S.filters; const mgr = isManager();
+  if(!mgr && !member(S.signedInAs)) S.signedInAs = "manager";
+  if(!views().some(v=>v.id===S.view)) S.view = "list";
+
+  const scoped = mgr ? DATA.tasks : DATA.tasks.filter(t=>t.assignee===S.signedInAs);
+  const byProject = scoped.filter(t=>!f.project || t.project===f.project);
+  const q = S.q.trim().toLowerCase();
+  const visible = byProject.filter(t =>
+    (!f.phase || t.phase===f.phase) && (!mgr || !f.person || t.assignee===f.person) &&
+    (!f.status || t.status===f.status) && (!q || t.title.toLowerCase().includes(q) || (t.notes||"").toLowerCase().includes(q)));
+
+  // Navigation
+  $("rail").innerHTML = views().map(v=>`<button class="rail-item ${S.view===v.id?"active":""}" data-view="${v.id}" aria-current="${S.view===v.id}"><i class="bi ${v.icon}"></i>${v.name}</button>`).join("");
+  $("railTeam").hidden = !mgr;
+  $("menuViews").innerHTML = views().map(v=>`<button class="menu-link ${S.view===v.id?"active":""}" data-view="${v.id}"><i class="bi ${v.icon}"></i>${v.name}</button>`).join("");
+  const cnt = p => scoped.filter(t=>(!p || t.project===p) && t.status!=="done").length;
+  $("menuProjects").innerHTML = [""].concat(DATA.projects).map(p=>`<button class="menu-link ${f.project===p?"active":""}" data-project="${esc(p)}"><span class="dot" style="background:${p?projColor(p):"#8592A3"}"></span><span class="text-truncate">${esc(p||"All projects")}</span><span class="ms-auto small opacity-75">${cnt(p)}</span></button>`).join("");
+  document.querySelectorAll('#menu [data-bs-target="#teamModal"]').forEach(b=>b.hidden=!mgr);
+
+  // Account menu
+  const meKey = mgr ? "manager" : S.signedInAs;
+  $("meBtn").innerHTML = `${avatar(meKey)}<span class="d-none d-md-inline small fw-bold text-body">${esc(mgr?"Manager":displayName(meKey))}</span><i class="bi bi-chevron-down small text-body-secondary d-none d-md-inline"></i>`;
+  $("signInList").innerHTML = [{key:"manager",name:"Manager",role:"Sees the whole team"}].concat(DATA.members).map(m=>`<button class="dropdown-item d-flex align-items-center gap-2 ${S.signedInAs===m.key?"active":""}" data-signin="${esc(m.key)}">${avatar(m.key)}<span class="lh-sm"><span class="d-block">${esc(m.name)}</span><small class="opacity-75">${esc(m.role)}</small></span></button>`).join("");
+
+  // Project bar
+  const pTitle = f.project || "All projects";
+  $("projBtn").innerHTML = `<span class="proj-icon" style="background:${f.project?projColor(f.project):"#18263A"}">${f.project?esc(projInitials(f.project)):"<i class='bi bi-grid-fill'></i>"}</span><span class="text-truncate" style="max-width:60vw">${esc(pTitle)}</span><i class="bi bi-chevron-down fs-6 text-body-secondary"></i>`;
+  $("projMenu").innerHTML = [""].concat(DATA.projects).map(p=>`<li><button class="dropdown-item d-flex align-items-center gap-2 ${f.project===p?"active":""}" data-project="${esc(p)}"><span class="dot" style="background:${p?projColor(p):"#8592A3"}"></span>${esc(p||"All projects")}<span class="ms-auto small opacity-75 ps-3">${cnt(p)} open</span></button></li>`).join("");
+  $("projMeta").textContent = mgr ? `${DATA.members.length} members · ${cnt(f.project)} open tasks` : `${displayName(S.signedInAs)} · my tasks`;
+  $("tabs").innerHTML = views().map(v=>`<button class="ptab ${S.view===v.id?"active":""}" data-view="${v.id}" aria-current="${S.view===v.id}">${v.name}</button>`).join("");
+
+  // Toolbar
+  $("toolrow").hidden = S.view==="team";
+  fill($("fPhase"), PHASES.map(p=>({value:p.id,label:p.name})), "All phases", f.phase);
+  fill($("fPerson"), DATA.members.map(m=>({value:m.key,label:m.name})), "All owners", f.person);
+  fill($("fStatus"), STATUSES.map(s=>({value:s.id,label:s.name})), "All statuses", f.status);
+  $("fPerson").hidden = !mgr;
+  $("fStatus").hidden = S.view==="kanban";
+  $("countLabel").textContent = `${visible.length} task${visible.length===1?"":"s"}`;
+
+  $("notices").innerHTML = !mgr ? `<div class="alert alert-primary d-flex gap-2 align-items-start py-2 small"><i class="bi bi-info-circle mt-1"></i><div>You can start work, add comments and submit tasks for review. Your manager approves finished work.</div></div>` : "";
+
+  ["dash","list","kanban","team"].forEach(v=>$("v"+v[0].toUpperCase()+v.slice(1)).hidden = S.view!==v);
+  if(S.view==="dash") renderDash(visible, byProject);
+  if(S.view==="list") renderList(visible);
+  if(S.view==="kanban") renderKanban(visible);
+  if(S.view==="team") renderTeam(byProject);
+}
+
+function renderDash(visible){
+  const mgr = isManager();
+  const open = visible.filter(t=>t.status!=="done");
+  const late = open.filter(t=>dueInfo(t).cls==="due-late");
+  const review = visible.filter(t=>t.status==="review");
+  const done = visible.filter(t=>t.status==="done");
+  const stat = (ic,cls,v,l)=>`<div class="col-6 col-xl-3"><div class="widget stat h-100"><span class="ic ${cls}"><i class="bi ${ic}"></i></span><div><div class="v tabular">${v}</div><div class="l">${l}</div></div></div></div>`;
+  const total = visible.length || 1;
+  const bar = STATUSES.map(s=>{ const c=visible.filter(t=>t.status===s.id).length; return c?`<i style="width:${c/total*100}%;background:var(--st-${s.id})" title="${s.name}: ${c}"></i>`:""; }).join("");
+  const legend = STATUSES.map(s=>`<div class="col-6 col-sm-3"><div class="d-flex align-items-center gap-2"><span class="dot" style="background:var(--st-${s.id})"></span><span class="small text-body-secondary">${s.name}</span></div><div class="fw-bold fs-5 tabular ms-3">${visible.filter(t=>t.status===s.id).length}</div></div>`).join("");
+  const upcoming = open.slice().sort((a,b)=>String(a.due).localeCompare(String(b.due))).slice(0,6);
+  const taskRow = t=>{ const d=dueInfo(t); return `<li class="list-group-item list-group-item-action d-flex align-items-center gap-2 py-2" role="button" data-id="${t.id}">${mgr?avatar(t.assignee):`<span class="dot" style="background:${projColor(t.project)}"></span>`}<div class="flex-grow-1 min-w-0" style="min-width:0"><div class="text-truncate fw-bold">${esc(t.title)}</div><div class="small text-body-secondary text-truncate">${esc(t.project)}</div></div><span class="small tabular text-nowrap ${d.cls}">${d.text}</span></li>`; };
+  const phases = PHASES.map(p=>{ const ts=visible.filter(t=>t.phase===p.id); const dn=ts.filter(t=>t.status==="done").length; const pc=ts.length?Math.round(dn/ts.length*100):0;
+    return `<div class="mb-3"><div class="d-flex small mb-1"><span class="fw-bold">${p.name}</span><span class="ms-auto text-body-secondary tabular">${dn}/${ts.length} approved</span></div><div class="progress" style="height:8px" role="progressbar" aria-label="${p.name}" aria-valuenow="${pc}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:${pc}%;background:var(--st-done)"></div></div></div>`; }).join("");
+  $("vDash").innerHTML = `
+    <div class="row g-3 mb-3">
+      ${stat("bi-list-task","ic-blue",open.length, mgr?"Open tasks":"My open tasks")}
+      ${stat("bi-exclamation-octagon","ic-red",late.length,"Overdue")}
+      ${stat("bi-hourglass-split","ic-amber",review.length, mgr?"Awaiting your review":"In review")}
+      ${stat("bi-check2-circle","ic-green",done.length,"Approved")}
+    </div>
+    <div class="row g-3">
+      <div class="col-12 col-xl-7">
+        <div class="widget h-100"><div class="widget-h"><i class="bi bi-pie-chart text-primary"></i>Task status</div>
+          <div class="p-3"><div class="statusbar mb-3">${bar}</div><div class="row g-3">${legend}</div></div>
+          <div class="widget-h border-top"><i class="bi bi-diagram-3 text-primary"></i>Progress by phase</div>
+          <div class="p-3 pb-1">${phases}</div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-5">
+        <div class="widget h-100"><div class="widget-h"><i class="bi bi-calendar-event text-primary"></i>Upcoming & overdue</div>
+          <ul class="list-group list-group-flush rounded-bottom" id="dashList">${upcoming.map(taskRow).join("") || `<li class="list-group-item text-body-tertiary small py-4 text-center">No open tasks.</li>`}</ul>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderList(visible){
+  const mgr = isManager();
+  const cols = mgr ? 6 : 5;
+  const order = {review:0, doing:1, todo:2, done:3};
+  let body = "";
+  PHASES.forEach(p=>{
+    const ts = visible.filter(t=>t.phase===p.id).sort((a,b)=>order[a.status]-order[b.status] || String(a.due).localeCompare(String(b.due)));
+    if(!ts.length) return;
+    const col = S.collapsed.has(p.id);
+    body += `<tr class="group ${col?"collapsed":""}" data-group="${p.id}" tabindex="0" aria-expanded="${!col}"><td colspan="${cols}"><span class="chev me-2"><i class="bi bi-chevron-down"></i></span><span class="gname">${p.name}</span><span class="badge rounded-pill text-bg-light border ms-2 fw-normal">${ts.length}</span></td></tr>`;
+    if(col) return;
+    body += ts.map(t=>{ const d=dueInfo(t); return `<tr class="task" data-id="${t.id}" tabindex="0" style="--sc:var(--st-${t.status})">
+      <td class="text-start"><div class="tname ${t.status==="done"?"done":""}">${esc(t.title)}</div><div class="small text-body-secondary d-flex align-items-center gap-1"><span class="dot" style="background:${projColor(t.project)};width:7px;height:7px"></span>${esc(t.project)}</div></td>
+      ${mgr?`<td class="text-start"><span class="d-inline-flex align-items-center gap-2 text-nowrap">${avatar(t.assignee)}${esc(displayName(t.assignee))}</span></td>`:""}
+      <td class="text-center">${stBadge(t.status)}</td>
+      <td class="text-end tabular text-nowrap ${d.cls}">${esc(d.label)}</td>
+      <td class="text-center">${prBadge(t.priority)}</td>
+      <td class="text-center">${pctBar(t.status)}</td>
+    </tr>`; }).join("");
+  });
+  $("vList").innerHTML = `<div class="tlist"><div class="table-responsive"><table class="table align-middle">
+    <thead><tr><th class="text-start">Task name</th>${mgr?`<th class="text-start">Owner</th>`:""}<th class="text-center">Status</th><th class="text-end">Due date</th><th class="text-center">Priority</th><th class="text-center">% Completed</th></tr></thead>
+    <tbody>${body || `<tr><td colspan="${cols}" class="text-center text-body-tertiary py-5">No tasks match these filters.</td></tr>`}</tbody>
+  </table></div></div>`;
+}
+
+function renderKanban(visible){
+  const mgr = isManager();
+  $("statusPills").innerHTML = STATUSES.map(s=>`<li class="nav-item"><button class="nav-link py-1 px-2 ${S.mobileStatus===s.id?"active":""}" data-mstatus="${s.id}">${s.name} <span class="opacity-75">${visible.filter(t=>t.status===s.id).length}</span></button></li>`).join("");
+  $("kanban").innerHTML = STATUSES.map(s=>{
+    const items = visible.filter(t=>t.status===s.id).sort((a,b)=>String(a.due).localeCompare(String(b.due)));
+    return `<div class="col-12 col-md-6 col-xxl-3 ${S.mobileStatus!==s.id?"d-none d-md-block":""}">
+      <section class="kcol h-100" data-status="${s.id}" style="--sc:var(--st-${s.id})">
+        <div class="kcol-h"><span class="dot" style="background:var(--st-${s.id})"></span>${s.name}<span class="n">${items.length}</span></div>
+        <div class="d-flex flex-column gap-2 px-2 pb-2">${items.map(t=>kcard(t,mgr)).join("") || `<div class="text-center text-body-tertiary small py-4">No tasks</div>`}</div>
+      </section></div>`;
+  }).join("");
+}
+function kcard(t,mgr){
+  const d = dueInfo(t); const last = (t.log||[]).slice(-1)[0];
+  let acts = "";
+  if(mgr && t.status==="review") acts = `<button class="btn btn-primary btn-sm" data-act="approve" data-id="${t.id}"><i class="bi bi-check2"></i> Approve</button><button class="btn btn-outline-secondary btn-sm" data-act="sendback" data-id="${t.id}">Request changes</button>`;
+  if(!mgr && t.status==="todo") acts = `<button class="btn btn-primary btn-sm" data-act="start" data-id="${t.id}"><i class="bi bi-play-fill"></i> Start work</button>`;
+  if(!mgr && t.status==="doing") acts = `<button class="btn btn-primary btn-sm" data-act="submit" data-id="${t.id}"><i class="bi bi-send"></i> Submit for review</button>`;
+  if(!mgr && t.status==="review") acts = `<span class="small text-body-secondary"><i class="bi bi-hourglass-split"></i> Waiting for approval</span>`;
+  return `<article class="kcard" ${mgr?'draggable="true"':""} data-id="${t.id}" tabindex="0" aria-label="${esc(t.title)}">
+    <div class="d-flex align-items-start gap-2"><span class="dot mt-1" style="background:${projColor(t.project)}" title="${esc(t.project)}"></span><div class="fw-bold flex-grow-1 ${t.status==="done"?"text-decoration-line-through text-body-secondary":""}">${esc(t.title)}</div></div>
+    <div class="small text-body-secondary mt-1 text-truncate">${esc(t.project)} · ${phaseName(t.phase)}</div>
+    <div class="d-flex align-items-center gap-2 mt-2 small">${mgr?avatar(t.assignee):""}${prBadge(t.priority)}<span class="ms-auto tabular ${d.cls||"text-body-secondary"}"><i class="bi bi-calendar3"></i> ${d.text}</span></div>
+    ${last&&t.status!=="done"?`<div class="last small text-body-secondary bg-body-tertiary rounded px-2 py-1 mt-2"><i class="bi bi-chat-left-text me-1"></i>${esc(last.text)}</div>`:""}
+    ${acts?`<div class="d-flex flex-wrap gap-2 mt-2 pt-2 border-top">${acts}</div>`:""}
+  </article>`;
+}
+
+function renderTeam(tasks){
+  const rows = DATA.members.map(m=>{
+    const ts = tasks.filter(t=>t.assignee===m.key);
+    const c = s => ts.filter(t=>t.status===s).length;
+    const late = ts.filter(t=>t.status!=="done" && dueInfo(t).cls==="due-late").length;
+    const total = ts.length || 1;
+    const seg = s => c(s)?`<i style="width:${c(s)/total*100}%;background:var(--st-${s})"></i>`:"";
+    return `<tr class="task" data-key="${esc(m.key)}" tabindex="0" style="--sc:transparent">
+      <td class="text-start"><div class="d-flex align-items-center gap-2 text-nowrap">${avatar(m.key,true)}<div class="lh-sm"><div class="fw-bold">${esc(m.name)}</div><small class="text-body-secondary">${esc(m.role)}</small></div></div></td>
+      <td class="text-end tabular">${ts.length - c("done")}</td>
+      <td class="text-end tabular ${late?"due-late":""}">${late}</td>
+      <td class="text-end tabular">${c("review")}</td>
+      <td class="text-end tabular">${c("done")}</td>
+      <td class="text-center"><div class="statusbar d-inline-flex" style="width:150px;height:8px">${seg("done")}${seg("review")}${seg("doing")}${seg("todo")}</div></td>
+    </tr>`;
+  }).join("");
+  $("vTeam").innerHTML = `<div class="tlist">
+    <div class="widget-h"><i class="bi bi-people text-primary"></i>Team workload<span class="ms-auto"></span><button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#teamModal"><i class="bi bi-gear"></i> Setup</button></div>
+    <div class="table-responsive"><table class="table align-middle" style="min-width:680px">
+      <thead><tr><th class="text-start">Member</th><th class="text-end">Open</th><th class="text-end">Overdue</th><th class="text-end">In review</th><th class="text-end">Approved</th><th class="text-center">Workload</th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="6" class="text-center text-body-tertiary py-5">No team members yet. Add them in Setup.</td></tr>`}</tbody>
+    </table></div>
+    <div class="px-3 py-2 border-top small text-body-secondary d-flex flex-wrap gap-3">${STATUSES.slice().reverse().map(s=>`<span class="d-inline-flex align-items-center gap-1"><span class="dot" style="background:var(--st-${s.id})"></span>${s.name}</span>`).join("")}</div>
+  </div>`;
+}
+
+/* ================= Actions ================= */
+const actor = () => isManager() ? "manager" : S.signedInAs;
+function withLog(t, text){ t.log=(t.log||[]).concat({at:new Date().toISOString(), by:actor(), text}).slice(-30); t.updatedAt=new Date().toISOString(); return t; }
+function saveAndRender(msg){ persist(); render(); if(msg) toast(msg); }
+let changesId=null;
+function act(kind, id){
+  const t = DATA.tasks.find(x=>x.id===id); if(!t) return;
+  if(kind==="sendback"){ changesId=id; $("changesTask").textContent=t.title; $("changesNote").value=""; bootstrap.Modal.getOrCreateInstance($("changesModal")).show(); return; }
+  if(kind==="approve"){ t.status="done"; withLog(t,"Approved."); saveAndRender("Task approved"); }
+  if(kind==="start"){ t.status="doing"; withLog(t,"Started work."); saveAndRender("Moved to in progress"); }
+  if(kind==="submit"){ t.status="review"; withLog(t,"Submitted for review."); saveAndRender("Submitted for review"); }
+}
+$("changesModal").addEventListener("shown.bs.modal", ()=>$("changesNote").focus());
+$("changesForm").addEventListener("submit", e=>{
+  e.preventDefault(); const t = DATA.tasks.find(x=>x.id===changesId); if(!t) return;
+  const note=$("changesNote").value.trim(); t.status="doing"; withLog(t, note?`Changes requested: ${note}`:"Changes requested.");
+  bootstrap.Modal.getInstance($("changesModal")).hide(); saveAndRender("Sent back with your note");
+});
+
+/* Navigation */
+function closeMenu(){ const m=bootstrap.Offcanvas.getInstance($("menu")); if(m) m.hide(); }
+document.addEventListener("click", e=>{
+  const v=e.target.closest("[data-view]"); if(v){ S.view=v.dataset.view; render(); closeMenu(); return; }
+  const p=e.target.closest("[data-project]"); if(p){ S.filters.project=p.dataset.project; render(); closeMenu(); return; }
+  const s=e.target.closest("[data-signin]"); if(s){ S.signedInAs=s.dataset.signin; S.filters.person=""; render(); toast(`Signed in as ${displayName(S.signedInAs==="manager"?"manager":S.signedInAs)}`); return; }
+  const m=e.target.closest("[data-mstatus]"); if(m){ S.mobileStatus=m.dataset.mstatus; render(); }
+});
+$("search").addEventListener("input", e=>{ S.q=e.target.value; render(); });
+$("fPhase").addEventListener("change", e=>{ S.filters.phase=e.target.value; render(); });
+$("fPerson").addEventListener("change", e=>{ S.filters.person=e.target.value; render(); });
+$("fStatus").addEventListener("change", e=>{ S.filters.status=e.target.value; render(); });
+
+function toggleGroup(g){ S.collapsed.has(g)?S.collapsed.delete(g):S.collapsed.add(g); render(); }
+$("vList").addEventListener("click", e=>{ const g=e.target.closest("tr.group"); if(g){ toggleGroup(g.dataset.group); return; } const r=e.target.closest("tr[data-id]"); if(r) openTask(r.dataset.id); });
+$("vList").addEventListener("keydown", e=>{ if(e.key!=="Enter") return; const g=e.target.closest("tr.group"); if(g){ toggleGroup(g.dataset.group); return; } const r=e.target.closest("tr[data-id]"); if(r) openTask(r.dataset.id); });
+$("vDash").addEventListener("click", e=>{ const r=e.target.closest("[data-id]"); if(r) openTask(r.dataset.id); });
+$("kanban").addEventListener("click", e=>{ const b=e.target.closest("[data-act]"); if(b){ act(b.dataset.act,b.dataset.id); return; } const c=e.target.closest(".kcard"); if(c) openTask(c.dataset.id); });
+$("kanban").addEventListener("keydown", e=>{ const c=e.target.closest(".kcard"); if(c && e.target===c && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); openTask(c.dataset.id); } });
+function pickMember(key){ S.filters.person=key; S.view="list"; render(); }
+$("vTeam").addEventListener("click", e=>{ const r=e.target.closest("tr[data-key]"); if(r) pickMember(r.dataset.key); });
+$("vTeam").addEventListener("keydown", e=>{ const r=e.target.closest("tr[data-key]"); if(r && e.key==="Enter") pickMember(r.dataset.key); });
+
+/* Drag and drop (manager, desktop) */
+let dragId=null; const K=$("kanban");
+K.addEventListener("dragstart", e=>{ const c=e.target.closest(".kcard"); if(c){ dragId=c.dataset.id; e.dataTransfer.effectAllowed="move"; } });
+K.addEventListener("dragover", e=>{ const col=e.target.closest(".kcol"); if(col&&dragId){ e.preventDefault(); K.querySelectorAll(".drop").forEach(x=>x!==col&&x.classList.remove("drop")); col.classList.add("drop"); } });
+K.addEventListener("dragleave", e=>{ const col=e.target.closest(".kcol"); if(col && !col.contains(e.relatedTarget)) col.classList.remove("drop"); });
+K.addEventListener("drop", e=>{
+  const col=e.target.closest(".kcol"); if(!col||!dragId) return; e.preventDefault();
+  const t=DATA.tasks.find(x=>x.id===dragId); dragId=null; K.querySelectorAll(".drop").forEach(x=>x.classList.remove("drop"));
+  if(t && t.status!==col.dataset.status){ t.status=col.dataset.status; withLog(t,`Moved to ${statusOf(t.status).name.toLowerCase()}.`); saveAndRender(); }
+});
+K.addEventListener("dragend", ()=>{ dragId=null; K.querySelectorAll(".drop").forEach(x=>x.classList.remove("drop")); });
+
+/* ================= Task drawer ================= */
+let editing=null;
+const panel = () => bootstrap.Offcanvas.getOrCreateInstance($("taskPanel"));
+function openTask(id){
+  const mgr = isManager(); editing = id || null;
+  const t = id ? DATA.tasks.find(x=>x.id===id) : {
+    title:"", project:S.filters.project||DATA.projects[0]||"", phase:S.filters.phase||"sd",
+    assignee: mgr ? (S.filters.person || (DATA.members[0]||{}).key || "") : S.signedInAs,
+    due:daysFromNow(7), status:"todo", priority:"normal", notes:"", log:[]
+  };
+  const canEditFields = mgr || !id;
+  $("taskForm").classList.remove("was-validated");
+  fill($("tProject"), DATA.projects.map(p=>({value:p,label:p})), null, t.project);
+  fill($("tPhase"), PHASES.map(p=>({value:p.id,label:p.name})), null, t.phase);
+  fill($("tStatus"), STATUSES.map(s=>({value:s.id,label:s.name})), null, t.status);
+  fill($("tPerson"), DATA.members.map(m=>({value:m.key,label:`${m.name} · ${m.role}`})), "Unassigned", t.assignee||"");
+  $("tTitle").value=t.title; $("tDue").value=t.due; $("tPriority").value=t.priority; $("tNotes").value=t.notes||""; $("tUpdate").value="";
+  ["tTitle","tDue","tNotes"].forEach(i=>$(i).readOnly=!canEditFields);
+  ["tProject","tPhase","tPriority"].forEach(i=>$(i).disabled=!canEditFields);
+  $("tPerson").disabled=!mgr; $("tStatus").disabled=!mgr;
+  $("taskCrumb").innerHTML = id ? `${esc(t.project)} › ${esc(phaseName(t.phase))}` : "New task";
+  $("taskTitle").innerHTML = id ? `${stBadge(t.status)} <span class="ms-1">Task details</span>` : "Add a task";
+  $("del").hidden = !(id && mgr);
+  $("updateWrap").hidden = !id;
+  $("save").textContent = !id ? "Add task" : (canEditFields ? "Save changes" : "Post comment");
+  const log=(t.log||[]).slice().reverse();
+  $("logWrap").hidden=!log.length;
+  $("log").innerHTML = log.map(l=>`<li><span class="fw-bold">${esc(displayName(l.by))}</span> ${esc(l.text)}<div class="text-body-tertiary">${esc(ago(l.at))}</div></li>`).join("");
+  panel().show();
+  $("taskPanel").addEventListener("shown.bs.offcanvas", ()=>{ (canEditFields?$("tTitle"):$("tUpdate")).focus(); }, {once:true});
+}
+$("add").addEventListener("click", ()=>openTask());
+$("taskForm").addEventListener("submit", e=>{
+  e.preventDefault(); const mgr=isManager(); const update=$("tUpdate").value.trim();
+  if(mgr || !editing){
+    if(!$("tTitle").value.trim() || !$("tDue").value){ $("taskForm").classList.add("was-validated"); return; }
+    const prev = editing ? DATA.tasks.find(x=>x.id===editing) : null;
+    const t = prev || {id:"t"+Date.now(), log:[]};
+    const before = prev ? {assignee:prev.assignee, status:prev.status} : null;
+    Object.assign(t, { title:$("tTitle").value.trim(), project:$("tProject").value, phase:$("tPhase").value,
+      assignee: mgr ? $("tPerson").value : S.signedInAs, due:$("tDue").value,
+      status: mgr ? $("tStatus").value : (prev?prev.status:"todo"), priority:$("tPriority").value, notes:$("tNotes").value.trim() });
+    if(!prev){ withLog(t, mgr?`Created and assigned to ${displayName(t.assignee)}.`:"Created this task."); DATA.tasks.push(t); }
+    else if(before.assignee!==t.assignee) withLog(t, `Reassigned to ${displayName(t.assignee)}.`);
+    else if(before.status!==t.status) withLog(t, `Moved to ${statusOf(t.status).name.toLowerCase()}.`);
+    else withLog(t, "Edited task details.");
+    if(update) withLog(t, update);
+    panel().hide(); saveAndRender(prev?"Changes saved":"Task added");
+  } else {
+    if(!update){ panel().hide(); return; }
+    withLog(DATA.tasks.find(x=>x.id===editing), update); panel().hide(); saveAndRender("Comment posted");
+  }
+});
+$("del").addEventListener("click", ()=>{ if(!editing || !confirm("Delete this task?")) return; DATA.tasks=DATA.tasks.filter(x=>x.id!==editing); panel().hide(); saveAndRender("Task deleted"); });
+
+/* ================= Setup ================= */
+function renderSetup(){
+  $("members").innerHTML = DATA.members.map(m=>{ const open=DATA.tasks.filter(t=>t.assignee===m.key && t.status!=="done").length;
+    return `<li class="list-group-item d-flex align-items-center gap-2">${avatar(m.key,true)}<div class="flex-grow-1 lh-sm"><div class="fw-bold">${esc(m.name)}</div><small class="text-body-secondary">${esc(m.role)} · ${open} open</small></div><button class="btn btn-sm btn-outline-danger" data-remove="${esc(m.key)}" aria-label="Remove ${esc(m.name)}"><i class="bi bi-trash"></i></button></li>`; }).join("") || `<li class="list-group-item text-body-tertiary small">No team members yet.</li>`;
+  $("projectList").innerHTML = DATA.projects.map(p=>`<li class="list-group-item d-flex align-items-center gap-2"><span class="proj-icon" style="background:${projColor(p)};width:24px;height:24px;font-size:.65rem">${esc(projInitials(p))}</span><span class="flex-grow-1">${esc(p)}</span><button class="btn btn-sm btn-outline-danger" data-rmproject="${esc(p)}" aria-label="Remove ${esc(p)}"><i class="bi bi-trash"></i></button></li>`).join("");
+}
+$("teamModal").addEventListener("show.bs.modal", ()=>{ closeMenu(); renderSetup(); });
+$("members").addEventListener("click", e=>{
+  const b=e.target.closest("[data-remove]"); if(!b) return; const key=b.dataset.remove;
+  const open=DATA.tasks.filter(t=>t.assignee===key && t.status!=="done").length;
+  if(open && !confirm(`${displayName(key)} has ${open} open task${open>1?"s":""}. They’ll become unassigned. Continue?`)) return;
+  DATA.tasks.forEach(t=>{ if(t.assignee===key && t.status!=="done") t.assignee=""; });
+  DATA.members=DATA.members.filter(m=>m.key!==key); if(S.filters.person===key) S.filters.person="";
+  saveAndRender(); renderSetup();
+});
+$("memberForm").addEventListener("submit", e=>{ e.preventDefault(); const name=$("newName").value.trim(); if(!name) return; DATA.members.push({key:"m-"+Date.now().toString(36), name, role:$("newRole").value}); $("newName").value=""; saveAndRender(`${name} added`); renderSetup(); });
+$("projectList").addEventListener("click", e=>{
+  const b=e.target.closest("[data-rmproject]"); if(!b) return; const p=b.dataset.rmproject; const n=DATA.tasks.filter(t=>t.project===p).length;
+  if(n){ alert(`“${p}” still has ${n} task${n>1?"s":""}. Move or delete them first.`); return; }
+  DATA.projects=DATA.projects.filter(x=>x!==p); if(S.filters.project===p) S.filters.project=""; saveAndRender(); renderSetup();
+});
+$("projectForm").addEventListener("submit", e=>{ e.preventDefault(); const p=$("newProject").value.trim(); if(!p||DATA.projects.includes(p)) return; DATA.projects.push(p); $("newProject").value=""; saveAndRender(`Project “${p}” added`); renderSetup(); });
+$("resetDemo").addEventListener("click", ()=>{ if(!confirm("Replace everything with the sample data?")) return; DATA=seed(); S.signedInAs="manager"; S.filters={phase:"",project:"",person:"",status:""}; saveAndRender("Sample data restored"); renderSetup(); });
+
+function toast(msg){ $("toastMsg").textContent=msg; bootstrap.Toast.getOrCreateInstance($("toast")).show(); }
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", e=>document.documentElement.setAttribute("data-bs-theme", e.matches?"dark":"light"));
+render();
+</script>
+</body>
+</html>
